@@ -1,0 +1,46 @@
+\documentclass[12pt,a4paper,openany,twoside]{book}
+\input{setup/package.tex}   %引用宏包所在位置
+%\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\newcommand{\bashscripts}[1]
+{
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\vspace{0.2cm}
+\noindent\textcolor{gray}{#1}
+\vspace{0.2cm}
+\end{colorboxed}
+}
+
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\input{setup/format.tex}    %格式所在位置
+\pagenumbering{Roman}   %Roman字体书写页码
+%-----------------------------------------------------------------------------
+\include{preface/cover}                                           %封面
+%\include{preface/intro}                                         %简介
+%\include{preface/intro2}                                       %序
+%\include{preface/preface2}                                   %二版前言
+%\include{preface/preface}                                     %前言
+%\include{preface/c_abstract}                             %中文摘要
+%\include{preface/e_abstract}                             %英文摘要
+%---------------------------------------目录部分---------------------------------
+\setcounter{page}{1}                                            %重新开始页码
+\tableofcontents
+%\addtocontents{toc}{\protect\begin{multicols}{2}}       %目录分两栏开始
+\mainmatter    %前言和目录页码结束，正文重新开始设置页码
+%-----------------------------------------正文开始---------------------------------
+
+\include{content/ch1}
+\include{content/ch2}
+\include{content/ch3}
+
+%-----------------------------------------正文结束--------------------------------
+%\include{book/answer}                                            %习题答案
+%\addtocontents{toc}{\protect\end{multicols}}   %目录分两栏结束
+%\include{reference/references}                              %参考文献部分
+\clearpage
+\end{CJK*}
+\end{document}

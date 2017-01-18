@@ -1,0 +1,61 @@
+\chapter{CentOS7最小安装+Xfce桌面环境}
+\section{操作系统与桌面环境的抉择}
+\subsection{操作系统}
+类Unix操作系统有很多，用户群较多的开放源代码而且免费的有:BSD系列(FreeBSD, NetBSD, OpenBSD)，Linux系列(CentOS,Suse,Ubuntu,Debian)。BSD和Linux一直以来口水战不断，谁也看不上谁，但同时又相互学习。本文不想再次引发这种无聊的战争，仅从个人体验谈起。最开始我尝试了BSD中用户数量最多，支持硬件最多的FreeBSD，安装完成发现还是有很多硬件不被支持，而且pkg安装软件速度很慢（应该是服务器网络问题）。对于新硬件的支持，Linux还是远远超前于BSD，最终还是决定选择熟悉的CentOS。顺便列出我理解的BSD和Linux的差异：\begin{itemize}
+  \item 软件授权协议。Linux使用GPL V2，要求所有的二次开发也必须采用GPL，保证了完整的开源。这也是为什么RedHat必须要开源从而能产生出CentOS的保证，也是目前Vmware被起诉的依据。而BSD系列则采用BSD协议，自己本身开源，但是二次开发的代码没有任何限制。这也是为什么很多商业嵌入式软件基于BSD开发的原因。
+  \item OS完整性。Linux内核和用户空间程序完全独立，尽管各个发行版搭配的用户空间程序不同，但是使用的内核都是基于同一套源代码。而BSD则是一个完整的OS，包括内核和应用程序，例如FreeBSD只有一个发行版，只要版本号相同，大家用的内核和应用软件都是相同的。问题是，除了FreeBSD还有NetBSD和OpenBSD，这三个系统的内核源代码并不相同。
+  \item 开发人群。Linux开发者大部分都是工作在一线的黑客工程师，而BSD的开发者则有很多高校的教授，所以有时候BSD也被叫做“学院派”。大体上说，Linux开发者更务实，而BSD开发者更严谨。
+  \item 流行度。目前来说，Linux的用户和开发者都远远多于BSD。
+  \item Unix哲学符合度。这个主要是针对应用软件来说的，不属于Linux内核范畴。虽然都是类Unix系统，但是对于Unix哲学的理解存在一定的差异。一般来说，BSD更加遵从传统的Unix哲学。在各大Linux发行版中被广泛采用的systemd受到了很多unix哲学遵从者的批评，就是因为它违反了“一个程序只做一件事，并做好”的教条。这种哲学的影响不可低估，的确有人就是因为systemd而从Linux阵营转到了BSD集团。
+\end{itemize}
+\subsection{桌面环境}
+桌面环境更是繁多，功能齐全华丽奢侈的有KDE，GNOME，简单快捷的有fvwm2,xfce等。对于工程师来说，KDE，GNOME过于笨重，fvwm则过于简单。这里选择xfce4，也是参考了linux基金会网站上做的30位Linux内核开发者桌面环境的调查。
+\section{安装步骤}
+\subsection{执行CentOS7 最小安装}
+去官网下载CentOS-7.0-1406-x86\_64-Minimal.iso，然后刻录光盘，安装之。安装完成后执行yum update更新系统。然后，执行
+\bashscripts{yum install epel-release}
+\subsection{安装X Window system}
+\bashscripts{yum groupinstall "X Window system"}
+
+检验安装是否成功：
+\bashscripts{sudo systemctl isolate graphical.target}
+
+\subsection{安装Xfce4}
+安装Xfce4桌面环境.
+\bashscripts{yum groupinstall xfce}
+
+进入Xfce。
+\bashscripts{sudo systemctl isolate graphical.target}
+
+\subsection{安装中文字体}
+在CentOS6中可以使用下面的命令一次性安装。
+\bashscripts{yum groupinstall "Chinese support"}
+
+CentOS7下不能这么安装，没有这个安装组。需要单独安装每个包。
+
+
+\bashscripts
+{
+\#安装楷体字体 \\
+yum install cjkuni-ukai-fonts
+}
+
+\subsection{安装输入法}
+查看输入法平台和输入法：
+\bashscripts{yum list ibus*}
+
+安装
+\bashscripts{
+yum install ibus.x86\_64\\
+yum install ibus-libpinyin.x86\_64\\
+yum install im-chooser.x86\_64 \#输入法选择器
+}
+
+输入im-chooser设置中文输入法切换方法和输入法.
+
+重启机器，一定要重启：
+\bashscripts{reboot}
+
+\subsection{安装firefox}
+\bashscripts{yum install firefox}
+

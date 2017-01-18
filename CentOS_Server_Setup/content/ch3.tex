@@ -1,0 +1,48 @@
+\chapter{CentOS安装GitLab}
+\section{安装步骤}
+\subsection{安装Git}
+\bashscripts{yum install git}
+\subsection{添加git帐号并允许sudo}
+\bashscripts{
+useradd --comment 'GitLab' git\\
+echo "git ALL=(ALL)       NOPASSWD: ALL" >>/etc/sudoers
+}
+\subsection{安装GitLab}
+\begin{lstlisting}[language=bash,extendedchars=false] 
+$ /home/git
+$ sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-8-stable gitlab
+$ cd /home/git/gitlab
+$ sudo -u git -H cp config/gitlab.yml.example config/gitlab.yml
+
+// 编辑git路径, gitlab的host:port
+$ vim config/gitlab.yml
+// bin_path: /usr/local/bin/git
+// host: localhost
+// port: 80
+
+// 给文件夹添加相应的权限
+$ chown -R git log/
+$ chown -R git tmp/
+$ chmod -R u+rwX  log/
+$ chmod -R u+rwX  tmp/
+
+// 创建必要的文件夹，以及复制配置文件
+$ sudo -u git -H mkdir /home/git/gitlab-satellites
+$ sudo -u git -H mkdir tmp/pids/
+$ sudo -u git -H mkdir tmp/sockets/
+$ sudo chmod -R u+rwX  tmp/pids/
+$ sudo chmod -R u+rwX  tmp/sockets/
+$ sudo -u git -H mkdir public/uploads
+$ sudo chmod -R u+rwX  public/uploads
+$ sudo -u git -H cp config/unicorn.rb.example config/unicorn.rb
+$ sudo -u git -H cp config/initializers/rack_attack.rb.example
+ config/initializers/rack_attack.rb
+
+// 配置数据库连接信息
+$ sudo -u git cp config/database.yml.mysql config/database.yml
+$ sudo -u git -H vim  config/database.yml
+$ vim config/database.yml
+// production:
+//     username: gitlab
+//     password: "gitlab"
+\end{lstlisting}
