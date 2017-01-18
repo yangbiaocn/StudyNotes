@@ -1,1 +1,1 @@
-# StudyNotesStudy Notes for Works.
+# StudyNotesStudy Notes for Works. The All Notes are wirted using Latex and can be compiled on CTEX.
