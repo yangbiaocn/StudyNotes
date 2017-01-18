@@ -1,0 +1,38 @@
+\renewcommand\today{\number\year\,年\,\number\month\,月\,\number\day\,日}
+
+\begin{titlepage}
+\begin{center}
+% Upper part of the page
+~\\[1.0cm]
+
+% Title
+\rule[0.5cm]{\textwidth}{1.5pt}\\[1.0cm]
+{\xiaochuhao \bfseries LUA学习笔记}\\[1.5cm]
+\rule[0.5cm]{\textwidth}{1.5pt}\\%[5.0cm]
+\if false
+\begin{figure}[htb!]
+  \centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=12cm]{fig/cover.jpg}\\
+  %\caption{}\label{}
+\end{figure}
+\fi
+
+
+
+\begin{minipage}{0.4\textwidth}
+\begin{center}
+\LARGE 杨~~~~标
+\end{center}
+\end{minipage}
+
+
+\vfill
+
+% Bottom of the page
+{\large \today}
+
+\end{center}
+\end{titlepage}
+\thispagestyle{empty}
+\clearpage{\pagestyle{empty}\cleardoublepage}
