@@ -3,12 +3,16 @@
 \subsection{安装Git}
 \bashscripts{yum install git}
 \subsection{添加git帐号并允许sudo}
-\bashscripts{
-useradd --comment 'GitLab' git\\
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+useradd --comment 'GitLab' git
 echo "git ALL=(ALL)       NOPASSWD: ALL" >>/etc/sudoers
-}
+\end{lstlisting}
+\end{colorboxed}
+
 \subsection{安装GitLab}
-\begin{lstlisting}[language=bash,extendedchars=false] 
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
 $ /home/git
 $ sudo -u git -H git clone https://gitlab.com/gitlab-org/gitlab-ce.git -b 7-8-stable gitlab
 $ cd /home/git/gitlab
@@ -46,3 +50,4 @@ $ vim config/database.yml
 //     username: gitlab
 //     password: "gitlab"
 \end{lstlisting}
+\end{colorboxed}
