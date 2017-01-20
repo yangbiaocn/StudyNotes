@@ -1,0 +1,45 @@
+\chapter{CentOS 7安装XAMPP}
+\section{XAMPP简介}
+ XAMPP（Apache+MySQL+PHP+PERL）是一个功能强大的建 XAMPP 软件站集成软件包。这个软件包原来的名字是 LAMPP，但是为了避免误解，最新的几个版本就改名为 XAMPP 了。它可以在Windows、Linux、Solaris、Mac OS X 等多种操作系统下安装使用，支持多语言：英文、简体中文、繁体中文、韩文、俄文、日文等。
+\section{安装步骤}
+XAMPP的安装需要管理员权限，使用root执行下面的指令
+\subsection{下载安装XAMPP}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+wget https://www.apachefriends.org/xampp-files/5.6.28/xampp-linux-x64-5.6.28-1-installer.run
+chmod +x xampp-linux-x64-5.6.28-1-installer.run
+./xampp-linux-x64-5.6.28-1-installer.run
+\end{lstlisting}
+\end{colorboxed}
+
+\subsection{启动、停止、重启}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+sudo /opt/lampp/lampp start
+sudo /opt/lampp/lampp stop
+sudo /opt/lampp/lampp restart
+\end{lstlisting}
+\end{colorboxed}
+
+\subsection{设置XAMPP}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+sudo /opt/lampp/lampp security
+\end{lstlisting}
+\end{colorboxed}
+
+\subsection{设置开机自启动XAMPP}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+sudo ln -s /opt/lampp/lampp /etc/init.d/lampp
+sudo chkconfig --add lampp
+\end{lstlisting}
+\end{colorboxed}
+
+\subsection{开启、关闭防火墙}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\begin{lstlisting}[style=custom_bash]
+systemctl start firewalld.service
+systemctl stop firewalld.service
+\end{lstlisting}
+\end{colorboxed}
