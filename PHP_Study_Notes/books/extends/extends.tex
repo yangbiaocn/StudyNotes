@@ -1,0 +1,122 @@
+\chapter{PHP扩展开发}
+PHP做为网站开发语言有着众多的优点，但是其依然有一些不足。比如其PHP是代码是可见的，当发布产品时，很容易被盗版。还有对于一些和操作系统驱动相关的复杂功能力不从心。
+因此最好是将这不想公开代码的部分或者一些复杂的功能做成动态链接库后再让PHP调用。
+
+PHP提供有调用外部扩展的方法，因为PHP是可以跨平台的所以对于外部扩展的实现在不同的操作系统下面也不一样。下面主要说明在Windows和Linux下的扩展实现方法。
+\section{Windows扩展开发}
+
+\subsection{示例}
+\subsubsection{调用第三方的DLL}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\cprogram{}
+\liuhao
+\begin{verbatim}
+<?PHP
+$b=new COM("Comtest.Class2");
+$t1=126;
+$t2=456;
+$r=$b->add($t1,$t2);
+$f=$b->about();
+echo $r;
+echo $f;
+?>
+\end{verbatim}
+\end{colorboxed}
+其中：Comtest为命名空间，Class2为类名，add和about为方法名。
+
+除此之外，调用访问EXCEL、WORD和数据库，都可以使用COM类。
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\cprogram{调用WORD的简单例子}
+\liuhao
+\begin{verbatim}
+<?php
+// 启动 word
+$word = new COM("word.application") or die("Unable to instanciate Word");
+print "Loaded Word, version {$word->Version}\n";
+
+//将其置前
+$word->Visible = 1;
+
+//打开一个空文档
+$word->Documents->Add();
+
+//随便做些事情
+$word->Selection->TypeText("This is a test...");
+$word->Documents[1]->SaveAs("Useless test.doc");
+
+//关闭 word
+$word->Quit();
+
+//释放对象
+$word->Release();
+$word = null;
+?>
+\end{verbatim}
+\end{colorboxed}
+
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\cprogram{访问MSSQL数据库系统}
+\liuhao
+\begin{verbatim}
+<?php
+//访问MSSQL数据库系统
+echo '访问MSSQL<br>' ;
+$dbConn=new COM ("ADODB.Connection") or die("创建COM失败");
+$ADO='Provider=sqloledb;Data Source=10.35.58.74;Initial Catalog=Tour;Min Pool Size=1;
+Persist Security Info=False;User;Password=fq15Ns@E#(';
+//"Provider=sqloledb;DataSource=10.35.58.112;Initial Catalog=Tour;
+//User Id=sa;Password=sa;"; fq15Ns@E#(
+//Access如:$ADO="DRIVER={Microsoft Access Driver (*.mdb)}; 
+//DBQ=" . realpath("mydb.mdb");
+$dbConn->open($ADO);
+//if($dbConn) echo"create conn OK";
+$rs=new COM("ADODB.RecordSet") or die("创建RS失败");
+echo"<br>";
+//if($rs) echo"create rs OK";
+$sql="Exec P_SelUser 9001111";//"SELECT * FROM user_userInfo";
+$rs->open($sql,$dbConn,1,1);
+
+while(!$rs->eof){
+
+echo $rs->fields["Account"]->value.":";
+echo $rs->fields["PhoneID"]->value;
+echo"<BR>";
+
+$rs->movenext();
+}
+
+$rs->Close;
+$rs=null;
+
+$dbConn->Close;
+$dbConn=null;
+?> 
+\end{verbatim}
+\end{colorboxed}
+
+\subsubsection{引用其它的php文件}
+\begin{colorboxed}[oval=true,boxcolor=darkblue,bgcolor=white]
+\cprogram{}
+\liuhao
+\begin{verbatim}
+<?php
+ include_once("WebConfig.php"); //站点配置文件 如：数据库连接参数设置
+ //自动加载
+ function __autoload($class)
+ {
+    $classname = ucfirst($class);
+    include_once("_Class/".$classname.".class.php");
+ }
+
+  $bll = new bookBLL();
+  $comm = New Common();
+
+  $msg = $_GET['msg'];
+  if($msg=="ok") {
+       echo("<script>alert('操作成功');</script>");
+  }
+?>
+\end{verbatim}
+\end{colorboxed}
+
+\section{Linux扩展开发}
